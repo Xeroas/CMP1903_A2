@@ -1,7 +1,7 @@
-﻿using System;
+using CMP1903_A1_2324;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,67 +11,85 @@ namespace CMP1903_A2
     {
         static void Main(string[] args)
         {
-            /*
-             * Create a Game object and call its methods.
-             * Create a Testing object to verify the output and operation of the other classes.
-             */
-
-            /// <summary>
-            /// The "Program" class contains the code to be ran by the program, in this case it includes the "Testing" method and "Game" method which are both instantiated and executed,
-            /// the Testing is done first and then the game will run in a loop until the user tells it to stop.
-            /// </summary>
-
-            Die playerOneDies = new Die(); //Dies are instantiated here.
-            Die playerTwoDies = new Die();
-            bool playerOneTurn = true; //toggle between players when conditions met (7 is rolled)
-
-            Game Game1 = new Game(); //Object instantiation, loading "Game" into the program class.
-
-            //Testing Test1 = new Testing(); //Object instantiation, loading "Testing" into the program class.
-            //Test1.Test(); //Run the testing method.
-            //Console.WriteLine("-------------------\nTesting complete\n-------------------"); //So long as no errors occur, this line will be output to let the user know testing has completed.
-
+            Statistics stats = new Statistics();
+            Testing GameTest = new Testing();
 
             string userInput;
             do
             {
-                Console.WriteLine("If you would like to stop rolling please enter 'Stop'\nPlease enter how many times would you like to roll the dies :");
+                Console.WriteLine("Enter '1' to play Sevens Out or '2' to view statistics or '3' to test the game is working correctly :");
                 userInput = Console.ReadLine();
 
-                if (userInput.ToLower() == "stop") //If user enters "stop", stop the loop.
+                switch (userInput)
                 {
-                    break;
+                    case "1":
+                        PlaySevensOutGame(stats);
+                        break;
+                    case "2":
+                        ViewStatistics(stats);
+                        Console.ReadLine();
+                        break;
+                    case "3":
+                        GameTest.Test();
+                        Console.WriteLine("Testing Complete, Sum values and die values are correct!");
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please enter '1' or '2'.");
+                        break;
                 }
+            } while (userInput != "1" && userInput != "2");
+        }
 
-                try
+        static void PlaySevensOutGame(Statistics stats)
+        {
+            bool gameStarted = false; //Used to tracks if game has started
+            string userInput;
+
+            do
+            {
+                Console.WriteLine("Enter '1' to play single player or '2' to play with two players:");
+                userInput = Console.ReadLine();
+
+                switch (userInput)
                 {
-                    int timesToRoll = Int32.Parse(userInput); //Cast userInput to int.
-                    for (int rollCounter = 1; rollCounter <= timesToRoll; rollCounter++) //Create counter to Roll dies based on user input.
-                    {
-                        var currentPlayer = playerOneTurn ? "Player One" : "Player Two"; //If PlayerOneTurn = True, current player is Player 1, else it's player 2
-                        var currentDie = playerOneTurn ? playerOneDies : playerTwoDies; //If PlayerOneTurn = True, use playerOneDies, else use playerTwoDies
-                        var dieRoll = currentDie.StartGameSevens(); // Roll dice for the current player
-
-
-                        Console.WriteLine($"-------------------\n{currentPlayer} rolled: Sum is = {dieRoll.Item1}\n-------------------");
-
-                        if (playerOneDies.SwapPlayers()) // Check if 7 has been rolled
+                    case "1":
+                        if (!gameStarted)
                         {
-                            Console.WriteLine("Total sum is 7, swap players");
-                            playerOneTurn = !playerOneTurn; // Swap players
+                            stats.IncreaseGameCount(false); // Increment game for correct game type, false = single player true = two player
+                            gameStarted = true;
                         }
-                    }
+                        PlaySevensOut1Player(stats);
+                        break;
+                    case "2":
+                        if (!gameStarted)
+                        {
+                            stats.IncreaseGameCount(true);
+                            gameStarted = true;
+                        }
+                        PlaySevensOut2Player(stats);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input. Please enter '1' or '2'.");
+                        break;
                 }
-                catch (FormatException) //If user inputs a string this will catch it and display appropriate message.
-                {
-                    Console.WriteLine("\nIncorrect input, please enter a number!\n");
-                }
+            } while (userInput != "1" && userInput != "2");
+        }
 
-                catch (Exception) //If user enters error-causing input this will catch it and display appropriate message.
-                {
-                    Console.WriteLine("Unexpected error, please try again!");
-                }
-            } while (true); //Ensure the code above loops while true (user has not told the code to stop).
+        static void PlaySevensOut2Player(Statistics stats)
+        {
+            SevensOut game = new SevensOut();
+            game.SevensOutTwoPlayer(stats);
+        }
+
+        static void PlaySevensOut1Player(Statistics stats)
+        {
+            SevensOut game = new SevensOut();
+            game.SevensOutOnePlayer(stats);
+        }
+
+        static void ViewStatistics(Statistics stats)
+        {
+            stats.DisplayStatistics();
         }
     }
 }
