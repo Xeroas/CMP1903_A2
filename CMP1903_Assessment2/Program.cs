@@ -17,8 +17,8 @@ namespace CMP1903_A2
             string userInput;
             do
             {
-                Console.WriteLine("Enter '1' to play Sevens Out or '2' to view statistics or '3' to test the game is working correctly :");
-                userInput = Console.ReadLine();
+                Console.WriteLine("Enter '1' to play Sevens Out or '2' to enter Testing, Enter '3' to view statistics. \nEnter 'Stop' at any time to exit the program.");
+                userInput = Console.ReadLine().ToLower();
 
                 switch (userInput)
                 {
@@ -26,29 +26,30 @@ namespace CMP1903_A2
                         PlaySevensOutGame(stats);
                         break;
                     case "2":
-                        ViewStatistics(stats);
-                        Console.ReadLine();
+                        GameTest.Test();
+                        Console.WriteLine("Testing Complete, die values are correct, no errors detected!\n");
                         break;
                     case "3":
-                        GameTest.Test();
-                        Console.WriteLine("Testing Complete, Sum values and die values are correct!");
+                        ViewStatistics(stats);
                         break;
+                    case "stop":
+                        Console.WriteLine("You have chosen to exit the game, exiting now!");
+                        return;
                     default:
-                        Console.WriteLine("Invalid input. Please enter '1' or '2'.");
+                        Console.WriteLine("Invalid input. Please enter a valid option (1-3).");
                         break;
                 }
-            } while (userInput != "1" && userInput != "2");
+            } while (userInput != "1"); //Loop when input is not 1 (when selecting stats or test will show stats / test then go back to menu)
         }
 
         static void PlaySevensOutGame(Statistics stats)
         {
-            bool gameStarted = false; //Used to tracks if game has started
             string userInput;
-
             do
             {
+                bool gameStarted = false; // Used to track if game has started
                 Console.WriteLine("Enter '1' to play single player or '2' to play with two players:");
-                userInput = Console.ReadLine();
+                userInput = Console.ReadLine().ToLower();
 
                 switch (userInput)
                 {
@@ -68,11 +69,17 @@ namespace CMP1903_A2
                         }
                         PlaySevensOut2Player(stats);
                         break;
+                    case "stop":
+                        Console.WriteLine("You have chosen to exit the game, exiting now!");
+                        return;
                     default:
                         Console.WriteLine("Invalid input. Please enter '1' or '2'.");
                         break;
                 }
-            } while (userInput != "1" && userInput != "2");
+
+                Console.WriteLine("Would you like to play again? (yes/no)");
+                userInput = Console.ReadLine().ToLower();
+            } while (userInput == "yes");
         }
 
         static void PlaySevensOut2Player(Statistics stats)
