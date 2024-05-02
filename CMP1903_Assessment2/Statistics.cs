@@ -9,7 +9,7 @@ namespace CMP1903_A2
 {
     internal class Statistics
     {
-        string filePath = @"C:\Users\JackT\OneDrive\Desktop\OOP ASS\CMP1903-OOP-AS2\CMP1903_Assessment2\game_stats.txt";
+        string filePath = @"C:\Users\JackT\OneDrive\Desktop\OOP ASS\CMP1903-OOP-AS2\CMP1903_Assessment2\game_stats.txt"; //hardcoded file location, for testing purposes create .txt file and replace this file path with /your/ one.
         private int _onePlayerHighScore;
         private int _twoPlayerHighScore;
         private int _onePlayerGameCount;
@@ -22,7 +22,7 @@ namespace CMP1903_A2
 
         public Statistics() //Statistics class constructor
         {
-            LoadStatistics(filePath);
+            LoadStatistics(filePath); //Load statistics from file when 'statistics' is constructed
         }
 
         public void UpdateStatistics(int playerOneScore, int playerTwoScore, bool isTwoPlayer, bool playerOneRolledSeven) //Method to update statistics so it can later be written to file (Ensuring written data is correct)
@@ -51,10 +51,10 @@ namespace CMP1903_A2
 
         public void DisplayStatistics()
         {
-            Console.WriteLine($"One Player Games Played: {_onePlayerGameCount}");
+            Console.WriteLine($"\nOne Player Games Played: {_onePlayerGameCount}");
             Console.WriteLine($"One Player High Score: {_onePlayerHighScore}");
             Console.WriteLine($"Two Player Games Played: {_twoPlayerGameCount}");
-            Console.WriteLine($"Two Player High Score: {_twoPlayerHighScore}");
+            Console.WriteLine($"Two Player High Score: {_twoPlayerHighScore}\n");
         }
 
         private void LoadStatistics(string filePath)
@@ -93,7 +93,7 @@ namespace CMP1903_A2
             }
             catch (Exception)
             {
-                Console.WriteLine($"Error loading statistics from file, please ensure it currently exists.");
+                Console.WriteLine("Error loading statistics from file, please ensure it currently exists.");
             }
         }
 
@@ -108,11 +108,11 @@ namespace CMP1903_A2
                     $"Two Player High Score: {_twoPlayerHighScore}"
                 };
                 File.WriteAllLines(filePath, lines);
-                Console.WriteLine("Statistics written to file successfully.");
+                Console.WriteLine("Statistics successfully updated.");
             }
             catch (Exception)
             {
-                Console.WriteLine($"Error writing statistics to file, please try again.");
+                Console.WriteLine("Error writing statistics to file, please try again.");
             }
         }
 
