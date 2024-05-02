@@ -13,7 +13,7 @@ namespace CMP1903_A2
 
         public int pubCurVal
         {
-            get => _dieCurVal; //Encapsulation of "_dieCurVal"
+            get => _dieCurVal; //Encapsulation
             set { _dieCurVal = value; }
         }
         private static Random _randNum = new Random(); //Private "random" variable created, set to static to stop overlapping die values.
@@ -34,7 +34,6 @@ namespace CMP1903_A2
 
             if (sum == 7)
             {
-                //Console.WriteLine("End of turn!");
                 _playerSwap = true; // When true players swap
             }
             else
